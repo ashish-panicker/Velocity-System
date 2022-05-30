@@ -3,6 +3,7 @@ package in.stackroute.batchservice.dto;
 import java.time.LocalDate;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import in.stackroute.batchservice.domain.Mentor;
 import in.stackroute.batchservice.domain.Status;
 
 import lombok.AllArgsConstructor;
@@ -29,5 +30,7 @@ public class BatchDto {
     private Status status;
 
     private List<String> students;
+
+    private String mentor;
     
 }

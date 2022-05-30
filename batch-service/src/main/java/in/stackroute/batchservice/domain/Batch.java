@@ -37,14 +37,17 @@ public class Batch {
 
     private Status status;
     
-    List<Student> students;
+    private List<Student> students;
 
-    public Batch(BatchDto batchDto, List<Student> students) {
+    private Mentor mentor;
+
+    public Batch(BatchDto batchDto, List<Student> students, Mentor mentor) {
         this.code = batchDto.getCode();
         this.description = batchDto.getDescription();
         this.startDate = batchDto.getStartDate();
         this.endDate = batchDto.getEndDate();
         this.status = batchDto.getStatus();
         this.students = students;
+        this.mentor = mentor;
     }
 }

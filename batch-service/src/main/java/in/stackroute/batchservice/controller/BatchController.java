@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import in.stackroute.batchservice.domain.Batch;
+import in.stackroute.batchservice.domain.Mentor;
 import in.stackroute.batchservice.domain.Student;
 import in.stackroute.batchservice.dto.BatchDto;
 import in.stackroute.batchservice.service.BatchService;
+import in.stackroute.batchservice.service.MentorService;
 import in.stackroute.batchservice.service.StudentService;
 
 @RestController
@@ -22,10 +24,13 @@ public class BatchController {
 
     private BatchService batchService;
     private StudentService studentService;
+    private MentorService mentorService;
 
-    public BatchController(BatchService batchService, StudentService studentService) {
+    public BatchController(BatchService batchService, StudentService studentService,
+            MentorService mentorService) {
         this.batchService = batchService;
         this.studentService = studentService;
+        this.mentorService = mentorService;
     }
 
     // get all batches
@@ -54,13 +59,15 @@ public class BatchController {
         if(students == null || students.isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
-        // fetch the students with the ids from the learner service
-        students.forEach(String::trim);
         List<Student> learners =  studentService.getAllbyIds(students);
         if(learners.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        Batch batch = new Batch(batchDto, learners);
+        Mentor mentor = mentorService.getById(batchDto.getMentor());
+        if(mentor == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        Batch batch = new Batch(batchDto, learners, mentor);
         return ResponseEntity.status(HttpStatus.CREATED).body(batchService.create(batch));
     }
 

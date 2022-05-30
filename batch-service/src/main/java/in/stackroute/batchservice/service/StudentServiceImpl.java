@@ -17,9 +17,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<Student> getAllbyIds(List<String> ids) {
-        System.err.println(ids);
         String data = ids.toString().replaceAll("[\\[\\](){}]","");
-        System.err.println(data);
         Student[] body = restTemplate.getForEntity("http://localhost:8000/api/v1/learners/ids/{ids}",Student[].class, data).getBody();
         return Arrays.asList(body);
     }
